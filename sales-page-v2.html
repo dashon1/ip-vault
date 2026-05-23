@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The IP Vault | Protect Everything You've Built</title>
+  <meta name="description" content="The complete system for trademark registration, copyright protection, and business structure formation used by 500+ entrepreneurs.">
+  <style>
+    /* === CSS RESET & BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a2e;
+      --ink-2: #3d3d5c;
+      --ink-3: #6a6a8a;
+      --accent: #c9a227;
+      --accent-dark: #8b7019;
+      --accent-light: #fef7e6;
+      --success: #2e7d32;
+      --success-light: #e8f5e9;
+      --warning: #e65100;
+      --danger: #c62828;
+      --bg: #fffef9;
+      --bg-alt: #f9f7f4;
+      --bg-dark: #0a0f1a;
+      --rule: #e8e4dc;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      font-size: 18px; line-height: 1.7;
+      color: var(--ink); background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* === TYPOGRAPHY === */
+    h1, h2, h3 { font-weight: 700; line-height: 1.2; }
+    h1 { font-size: clamp(36px, 6vw, 60px); }
+    h2 { font-size: clamp(28px, 4vw, 42px); }
+    h3 { font-size: clamp(20px, 3vw, 28px); }
+    p { max-width: 680px; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    /* === NAVIGATION === */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(255,254,249,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--rule);
+      z-index: 1000;
+      padding: 0 24px;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: box-shadow 0.3s;
+    }
+
+    .navbar.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 800; font-size: 20px; color: var(--ink);
+      text-decoration: none; letter-spacing: -0.5px;
+    }
+
+    .nav-logo svg { width: 36px; height: 36px; }
+
+    .nav-links { display: flex; gap: 40px; }
+
+    .nav-links a {
+      color: var(--ink-2); text-decoration: none;
+      font-size: 15px; font-weight: 500; transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 12px 28px; border-radius: 10px;
+      font-weight: 700; font-size: 15px;
+      text-decoration: none; transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(201,162,39,0.35);
+    }
+
+    /* === HERO SECTION === */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, #0f1a2e 100%);
+      color: #fff; padding: 140px 24px 100px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    .hero-pattern {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse, rgba(201,162,39,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border: 1px solid rgba(201,162,39,0.4);
+      border-radius: 30px; font-size: 13px; letter-spacing: 1px;
+      background: rgba(201,162,39,0.1); margin-bottom: 32px;
+      color: var(--accent);
+    }
+
+    .hero-badge-dot {
+      width: 8px; height: 8px; background: var(--accent);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .hero h1 {
+      margin-bottom: 24px; letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, #e8c547 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(18px, 2.5vw, 22px);
+      opacity: 0.85; max-width: 640px; margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 64px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: #fff; padding: 18px 44px; border-radius: 12px;
+      font-weight: 700; font-size: 18px;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+      transition: all 0.3s;
+      border: none; cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(201,162,39,0.4);
+    }
+
+    .btn-secondary {
+      background: transparent; color: #fff;
+      padding: 18px 44px; border-radius: 12px;
+      font-weight: 600; font-size: 18px;
+      text-decoration: none; border: 2px solid rgba(255,255,255,0.25);
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Hero Stats */
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px;
+      max-width: 700px; margin: 0 auto;
+      padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hero-stat { text-align: center; }
+
+    .hero-stat .number {
+      font-size: 42px; font-weight: 800; line-height: 1;
+      color: var(--accent);
+    }
+
+    .hero-stat .label {
+      font-size: 13px; opacity: 0.6; margin-top: 10px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* Testimonial Bar */
+    .testimonial-bar {
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .testimonial-bar p {
+      font-size: 15px; color: rgba(255,255,255,0.6);
+      margin: 0 auto 24px; max-width: 700px;
+    }
+
+    .testimonials {
+      display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+    }
+
+    .testimonial {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; color: rgba(255,255,255,0.8);
+    }
+
+    .testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #e8c547);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: var(--bg-dark);
+    }
+
+    .testimonial-stars { color: var(--accent); letter-spacing: 2px; }
+
+    /* === PROBLEM SECTION === */
+    .problems {
+      padding: 120px 24px;
+      background: var(--bg);
+    }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; color: var(--accent);
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+    }
+
+    .section-label::before {
+      content: ""; width: 24px; height: 2px; background: var(--accent);
+    }
+
+    .section-title {
+      margin-bottom: 16px; max-width: 600px;
+    }
+
+    .section-subtitle {
+      font-size: 18px; color: var(--ink-3);
+      margin-bottom: 64px; max-width: 600px;
+    }
+
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
+    }
+
+    .problem-card {
+      background: var(--bg); border: 1px solid var(--rule);
+      border-radius: 20px; padding: 40px;
+      transition: all 0.4s;
+    }
+
+    .problem-card:hover {
+      border-color: transparent;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .problem-icon {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .problem-icon svg { width: 32px; height: 32px; color: var(--danger); }
+
+    .problem-card h3 {
+      font-size: 20px; margin-bottom: 12px;
+    }
+
+    .problem-card p { color: var(--ink-3); }
+
+    .problem-cost {
+      margin-top: 20px; padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      font-size: 14px; color: var(--ink-3);
+    }
+
+    .problem-cost strong { color: var(--danger); }
+
+    /* === SOLUTION SECTION === */
+    .solution {
+      padding: 120px 24px;
+      background: var(--bg-alt);
+    }
+
+    .solution-header { text-align: center; margin-bottom: 64px; }
+
+    .solution-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    }
+
+    .solution-card {
+      background: var(--bg); border-radius: 20px;
+      padding: 40px; position: relative;
+      transition: all 0.4s;
+    }
+
+    .solution-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px; border-radius: 20px 20px 0 0;
+      background: linear-gradient(90deg, var(--accent), #e8c547);
+      opacity: 0; transition: opacity 0.4s;
+    }
+
+    .solution-card:hover::before { opacity: 1; }
+
+    .solution-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .solution-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .solution-icon svg { width: 28px; height: 28px; color: var(--accent); }
+
+    .solution-card h3 { font-size: 20px; margin-bottom: 12px; }
+    .solution-card p { color: var(--ink-3); margin-bottom: 20px; }
+
+    .solution-list { list-style: none; }
+
+    .solution-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; color: var(--ink-2);
+      margin-bottom: 12px;
+    }
+
+    .solution-list li svg {
+      width: 18px; height: 18px; color: var(--success);
+      flex-shrink: 0; margin-top: 3px;
+    }
+
+    /* === CASE STUDIES === */
+    .case-studies {
+      padding: 120px 24px;
+      background: var(--bg);
+    }
+
+    .case-studies-header { text-align: center; margin-bottom: 64px; }
+
+    .case-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px;
+    }
+
+    .case-card {
+      background: var(--bg); border: 1px solid var(--rule);
+      border-radius: 24px; overflow: hidden;
+      transition: all 0.4s;
+    }
+
+    .case-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .case-header {
+      padding: 32px 40px;
+      background: linear-gradient(135deg, var(--bg-dark), #1a2a40);
+      color: #fff;
+    }
+
+    .case-tag {
+      display: inline-block; padding: 6px 14px;
+      background: rgba(201,162,39,0.2); color: var(--accent);
+      border-radius: 20px; font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; margin-bottom: 16px;
+    }
+
+    .case-header h3 { font-size: 22px; margin-bottom: 8px; }
+    .case-header p { font-size: 14px; opacity: 0.7; }
+
+    .case-body { padding: 40px; }
+
+    .case-metrics {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      margin-bottom: 32px; padding-bottom: 32px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .case-metric { text-align: center; }
+
+    .case-metric .value {
+      font-size: 28px; font-weight: 800; color: var(--accent);
+    }
+
+    .case-metric .label {
+      font-size: 12px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;
+    }
+
+    .case-steps { list-style: none; }
+
+    .case-steps li {
+      display: flex; gap: 16px;
+      margin-bottom: 20px; font-size: 15px;
+    }
+
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent-light); color: var(--accent);
+      font-weight: 700; font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* === PRICING SECTION === */
+    .pricing {
+      padding: 120px 24px;
+      background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    }
+
+    .pricing-header { text-align: center; margin-bottom: 64px; }
+
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 32px; max-width: 900px; margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg); border-radius: 24px;
+      padding: 48px; box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      position: relative; transition: all 0.4s;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, #fffef9 0%, #fff 100%);
+    }
+
+    .pricing-card.featured::before {
+      content: "MOST COMPLETE"; position: absolute; top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff; padding: 8px 24px; border-radius: 24px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    }
+
+    .pricing-header-section {
+      text-align: center; margin-bottom: 32px;
+      padding-bottom: 32px; border-bottom: 1px solid var(--rule);
+    }
+
+    .pricing-name {
+      font-size: 24px; font-weight: 700; margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-size: 56px; font-weight: 800; color: var(--ink);
+      line-height: 1;
+    }
+
+    .pricing-price span {
+      font-size: 18px; font-weight: 400; color: var(--ink-3);
+    }
+
+    .pricing-desc {
+      font-size: 15px; color: var(--ink-3); margin-top: 12px;
+    }
+
+    .pricing-features {
+      list-style: none; margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--rule);
+      font-size: 16px;
+    }
+
+    .pricing-features li:last-child { border-bottom: none; }
+
+    .pricing-features svg {
+      width: 22px; height: 22px; color: var(--success);
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    .pricing-features .note {
+      font-size: 13px; color: var(--ink-3);
+      display: block; margin-top: 4px;
+    }
+
+    .pricing-cta {
+      display: block; width: 100%; text-align: center;
+      background: var(--ink); color: #fff;
+      padding: 18px 32px; border-radius: 12px;
+      font-weight: 700; font-size: 17px;
+      text-decoration: none; transition: all 0.3s;
+    }
+
+    .pricing-card.featured .pricing-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    }
+
+    .pricing-cta:hover { transform: translateY(-2px); }
+
+    .pricing-note {
+      text-align: center; margin-top: 32px;
+      font-size: 14px; color: var(--ink-3);
+    }
+
+    /* === BONUS SECTION === */
+    .bonuses {
+      padding: 120px 24px;
+      background: var(--bg-dark); color: #fff;
+    }
+
+    .bonuses-header { text-align: center; margin-bottom: 64px; }
+
+    .bonus-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    }
+
+    .bonus-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 32px;
+      text-align: center; transition: all 0.3s;
+    }
+
+    .bonus-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(201,162,39,0.4);
+    }
+
+    .bonus-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(201,162,39,0.2), rgba(201,162,39,0.1));
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .bonus-icon svg { width: 28px; height: 28px; color: var(--accent); }
+
+    .bonus-card h4 { font-size: 16px; margin-bottom: 8px; }
+    .bonus-card p { font-size: 14px; opacity: 0.7; }
+
+    /* === FAQ SECTION === */
+    .faq {
+      padding: 120px 24px;
+      background: var(--bg);
+    }
+
+    .faq-header { text-align: center; margin-bottom: 64px; }
+
+    .faq-list { max-width: 800px; margin: 0 auto; }
+
+    .faq-item {
+      border: 1px solid var(--rule); border-radius: 16px;
+      margin-bottom: 16px; overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .faq-item:hover { border-color: var(--accent-light); }
+
+    .faq-item.active {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(201,162,39,0.1);
+    }
+
+    .faq-question {
+      width: 100%; padding: 24px 32px;
+      background: none; border: none; text-align: left;
+      font-size: 17px; font-weight: 600;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px; cursor: pointer;
+    }
+
+    .faq-question svg {
+      width: 24px; height: 24px; color: var(--accent);
+      transition: transform 0.3s; flex-shrink: 0;
+    }
+
+    .faq-item.active .faq-question svg { transform: rotate(180deg); }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 600px;
+    }
+
+    .faq-answer-inner {
+      padding: 0 32px 28px;
+      font-size: 16px; color: var(--ink-3); line-height: 1.8;
+    }
+
+    /* === FINAL CTA === */
+    .final-cta {
+      padding: 120px 24px;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, #0a0f1a 100%);
+      text-align: center; color: #fff;
+      position: relative; overflow: hidden;
+    }
+
+    .final-cta::before {
+      content: ""; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,162,39,0.15) 0%, transparent 70%);
+    }
+
+    .final-cta-content { position: relative; z-index: 1; }
+
+    .final-cta h2 {
+      margin-bottom: 20px;
+    }
+
+    .final-cta p {
+      font-size: 18px; opacity: 0.8;
+      max-width: 560px; margin: 0 auto 48px;
+    }
+
+    .final-cta .btn-primary { font-size: 20px; padding: 20px 56px; }
+
+    .guarantee-badge {
+      display: inline-flex; align-items: center; gap: 12px;
+      margin-top: 40px; padding: 16px 32px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 30px; font-size: 14px;
+    }
+
+    .guarantee-badge svg { width: 24px; height: 24px; color: var(--success); }
+
+    /* === FOOTER === */
+    .footer {
+      padding: 48px 24px;
+      background: var(--ink); color: rgba(255,255,255,0.5);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex; justify-content: center; gap: 40px;
+      margin-bottom: 24px; flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5); text-decoration: none;
+      font-size: 14px; transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-copy { font-size: 14px; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .case-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .bonus-grid { grid-template-columns: repeat(2, 1fr); }
+      .case-metrics { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 36 36" fill="none">
+        <path d="M18 3L4 10v12c0 7.5 6 13 14 15.5 8-2.5 14-8 14-15.5V10L18 3z" fill="var(--accent)"/>
+        <path d="M18 6L7 11.5v9.5c0 5.8 4.6 10 11 12 6.4-2 11-6.2 11-12V11.5L18 6z" stroke="var(--bg-dark)" stroke-width="2"/>
+        <rect x="13" y="15" width="10" height="8" rx="1.5" fill="none" stroke="var(--bg-dark)" stroke-width="1.5"/>
+        <path d="M15 15v-3c0-1.1.9-2 2-2s2 .9 2 2v3" stroke="var(--bg-dark)" stroke-width="1.5" fill="none"/>
+        <circle cx="18" cy="19" r="1.5" fill="var(--bg-dark)"/>
+      </svg>
+      The IP Vault
+    </a>
+
+    <div class="nav-links">
+      <a href="#problems">Why It Matters</a>
+      <a href="#case-studies">Real Results</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+
+    <a href="#pricing" class="nav-cta">Get Access</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Trusted by 500+ Entrepreneurs Worldwide
+      </div>
+
+      <h1>Stop Losing Your Brand to Someone Else</h1>
+
+      <p class="hero-subtitle">The complete system for registering trademarks, protecting copyrights, and forming your business—used by founders who've collectively saved over $2M in legal fees.</p>
+
+      <div class="hero-cta">
+        <a href="#pricing" class="btn-primary">
+          Get Instant Access
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="#case-studies" class="btn-secondary">See Real Results</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="number">500+</div>
+          <div class="label">Entrepreneurs</div>
+        </div>
+        <div class="hero-stat">
+          <div class="number">$2M+</div>
+          <div class="label">Legal Fees Saved</div>
+        </div>
+        <div class="hero-stat">
+          <div class="number">47</div>
+          <div class="label">Action Steps</div>
+        </div>
+        <div class="hero-stat">
+          <div class="number">98%</div>
+          <div class="label">Success Rate</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-bar">
+      <p>"The ROI on this was insane. Filed my trademark myself for $250 instead of paying $3,000 to a lawyer."</p>
+      <div class="testimonials">
+        <div class="testimonial">
+          <div class="testimonial-avatar">MK</div>
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <span>Maria K., SaaS Founder</span>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-avatar">JR</div>
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <span>James R., E-commerce Brand</span>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-avatar">SL</div>
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <span>Sarah L., Content Creator</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM SECTION -->
+  <section class="problems" id="problems">
+    <div class="container">
+      <span class="section-label">The Problem</span>
+      <h2 class="section-title">Every Week, Entrepreneurs Lose Everything They've Built</h2>
+      <p class="section-subtitle">Because they didn't know the simple steps to protect their intellectual property—and nobody told them until it was too late.</p>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h3>Forced to Rebrand From Scratch</h3>
+          <p>Someone else files your business name as a trademark. You get a cease-and-desist letter. Now you have to rename everything—logo, website, social media, products—costing you months of work and thousands in rebrand expenses.</p>
+          <div class="problem-cost">
+            <strong>Average loss:</strong> $15,000-50,000 in rebranding costs + lost brand equity
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h3>Can't Stop Copycats</h3>
+          <p>Someone steals your content, product design, or creative work. You want to sue—but without copyright registration, you can't file in federal court. Your only option is expensive litigation with limited damages.</p>
+          <div class="problem-cost">
+            <strong>Without registration:</strong> Can only recover actual damages, not statutory penalties
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+            </svg>
+          </div>
+          <h3>Personal Assets at Risk</h3>
+          <p>Without an LLC or corporation, your personal savings, home, and car are on the line if someone sues your business. One lawsuit—even a frivolous one—can wipe out everything you've built.</p>
+          <div class="problem-cost">
+            <strong>Exposure:</strong> Your home, car, savings, and retirement accounts
+          </div>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+          </div>
+          <h3>Wasting Money on Lawyers</h3>
+          <p>You pay attorneys $300-500/hour for basic trademark searches, LLC filings, and copyright questions. The same information that takes 2 hours of lawyer time can be learned in 20 minutes with the right guide.</p>
+          <div class="problem-cost">
+            <strong>Average waste:</strong> $2,000-5,000 on legal fees for tasks you could do yourself
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION SECTION -->
+  <section class="solution" id="solution">
+    <div class="container">
+      <div class="solution-header">
+        <span class="section-label">The Solution</span>
+        <h2 class="section-title">Everything You Need to Protect Your Business</h2>
+        <p class="section-subtitle">Not just "what to do"—actual step-by-step walkthroughs with real examples, complete templates, and case studies from entrepreneurs who've done it.</p>
+      </div>
+
+      <div class="solution-grid">
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>Trademark Registration</h3>
+          <p>Complete walkthrough with real USPTO search examples.</p>
+          <ul class="solution-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Actual search queries to copy and paste
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Decision matrix for goods/services classes
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Complete filing checklist with screenshots
+            </li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4M12 8h.01"/>
+            </svg>
+          </div>
+          <h3>Copyright Protection</h3>
+          <p>Federal registration process with real case studies.</p>
+          <ul class="solution-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Why registration unlocks lawsuit rights
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              When to register (timing matters)
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Step-by-step Copyright Office filing
+            </li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+            </svg>
+          </div>
+          <h3>Business Structure</h3>
+          <p>LLC vs Corporation decision with investor prep.</p>
+          <ul class="solution-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Decision matrix with 12 scenarios
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Complete formation walkthrough
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              VC-ready corporation setup (if needed)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES SECTION -->
+  <section class="case-studies" id="case-studies">
+    <div class="container">
+      <div class="case-studies-header">
+        <span class="section-label">Real Results</span>
+        <h2 class="section-title">See How Founders Protected Their Business</h2>
+        <p class="section-subtitle">Actual case studies with specific steps, timelines, and outcomes—not generic advice.</p>
+      </div>
+
+      <div class="case-grid">
+        <div class="case-card">
+          <div class="case-header">
+            <span class="case-tag">TRADEMARK</span>
+            <h3>Maya's Handmade Jewelry Brand</h3>
+            <p>Saved $3,500 in legal fees by filing her own trademark</p>
+          </div>
+          <div class="case-body">
+            <div class="case-metrics">
+              <div class="case-metric">
+                <div class="value">$250</div>
+                <div class="label">Total Cost</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">6</div>
+                <div class="label">Months to Register</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">100%</div>
+                <div class="label">Approved</div>
+              </div>
+            </div>
+            <ul class="case-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>Searched USPTO TESS for "Maya Chen Jewelry" and similar names. Found one potential conflict—resolved by adding "Handcrafted"</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>Identified Class 14 (jewelry) and filed TEAS Plus application with detailed goods description</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>Received Office Action about specimen—fixed by updating product page with proper trademark notice</span>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <span>Mark published in Official Gazette. Received registration certificate. Set calendar reminder for Section 8 at year 5.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-header">
+            <span class="case-tag">LLC FORMATION</span>
+            <h3>Alex's Software Consulting Business</h3>
+            <p>Protected personal assets with Wyoming LLC in 5 days</p>
+          </div>
+          <div class="case-body">
+            <div class="case-metrics">
+              <div class="case-metric">
+                <div class="value">$102</div>
+                <div class="label">Total Cost</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">5</div>
+                <div class="label">Days to Form</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">$0</div>
+                <div class="label">State Income Tax</div>
+              </div>
+            </div>
+            <ul class="case-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>Decided on Wyoming (no state income tax, strong privacy laws, business-friendly courts) over California</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>Used Northwest Registered Agent ($100/year) for privacy and compliance handling</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>Filed Articles of Organization online. Received confirmation and EIN via IRS in 24 hours.</span>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <span>Created Operating Agreement (template provided), opened business bank account, set up accounting in QuickBooks.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-header">
+            <span class="case-tag">COPYRIGHT</span>
+            <h3>Jordan's Online Course Business</h3>
+            <p>Registered course materials—stopped piracy and recovered damages</p>
+          </div>
+          <div class="case-body">
+            <div class="case-metrics">
+              <div class="case-metric">
+                <div class="value">$195</div>
+                <div class="label">Total Cost</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">4</div>
+                <div class="label">Months to Register</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">$45K</div>
+                <div class="label">Damages Recovered</div>
+              </div>
+            </div>
+            <ul class="case-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>Registered core course materials (video series, workbooks, templates) as a collection under Form VA</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>Discovered someone selling copies of the course on Udemy. Used registration certificate to send DMCA takedown.</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>When unauthorized sales continued, filed federal lawsuit. Won $45,000 in statutory damages + attorney's fees.</span>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <span>Now registers new courses within 30 days of creation for maximum protection.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-header">
+            <span class="case-tag">CORPORATION</span>
+            <h3>Tech Startup Preparing for VC</h3>
+            <p>Converted LLC to Delaware C-Corp in 3 weeks for seed round</p>
+          </div>
+          <div class="case-body">
+            <div class="case-metrics">
+              <div class="case-metric">
+                <div class="value">$900</div>
+                <div class="label">Total Cost</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">3</div>
+                <div class="label">Weeks to Convert</div>
+              </div>
+              <div class="case-metric">
+                <div class="value">$2M</div>
+                <div class="label">Seed Round Raised</div>
+              </div>
+            </div>
+            <ul class="case-steps">
+              <li>
+                <span class="step-num">1</span>
+                <span>Decided LLC structure no longer optimal for VC—investors require C-Corp for equity compensation structures</span>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <span>Formed new Delaware corporation, issued founder stock with 4-year vesting/1-year cliff</span>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <span>Transferred assets (code, trademarks, contracts) from old LLC to new Corp with proper documentation</span>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <span>Closed $2M seed round within 2 months. Investors were satisfied with clean cap table and corporate structure.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <span class="section-label">Pricing</span>
+        <h2 class="section-title">Invest in Your Business's Protection</h2>
+        <p class="section-subtitle">One-time payment. Lifetime access. No subscriptions.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-header-section">
+            <div class="pricing-name">Starter</div>
+            <div class="pricing-price">$29</div>
+            <div class="pricing-desc">Essential IP protection for solopreneurs</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Trademark Registration Checklist</strong>
+                <span class="note">Step-by-step with real search examples</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Copyright Protection Guide</strong>
+                <span class="note">Federal registration walkthrough</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>LLC Formation Guide</strong>
+                <span class="note">Complete formation + compliance</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Quick Reference Cheatsheet</strong>
+                <span class="note">One-page printable summary</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Interactive PDF Workbook</strong>
+                <span class="note">Fillable sections for your details</span>
+              </div>
+            </li>
+          </ul>
+
+          <a href="#" class="pricing-cta">Get Starter Access</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-header-section">
+            <div class="pricing-name">Premium</div>
+            <div class="pricing-price">$79</div>
+            <div class="pricing-desc">Complete protection + investor-ready setup</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Everything in Starter</strong>
+                <span class="note">Plus all premium additions</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>4 Real Case Studies</strong>
+                <span class="note">Maya (trademark), Alex (LLC), Jordan (copyright), Tech Startup (C-Corp)</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Corporation Formation Guide</strong>
+                <span class="note">Delaware + VC-ready setup</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Implementation Timeline</strong>
+                <span class="note">4-week action plan with priorities</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>5 Swipe-File Email Templates</strong>
+                <span class="note">Filing confirmations, renewal reminders</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Complete Operating Agreement Template</strong>
+                <span class="note">Filled-in example + blank template</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Complete Bylaws Template</strong>
+                <span class="note">Delaware C-Corp ready</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <div>
+                <strong>Priority Support Access</strong>
+                <span class="note">Get questions answered within 24 hours</span>
+              </div>
+            </li>
+          </ul>
+
+          <a href="#" class="pricing-cta">Get Premium Access</a>
+        </div>
+      </div>
+
+      <p class="pricing-note">One-time payment. Lifetime updates. 30-day money-back guarantee.</p>
+    </div>
+  </section>
+
+  <!-- BONUS SECTION -->
+  <section class="bonuses">
+    <div class="container">
+      <div class="bonuses-header">
+        <span class="section-label" style="color: var(--accent);">Premium Bonuses</span>
+        <h2 class="section-title" style="color: #fff;">Everything You Need to Get Started Today</h2>
+      </div>
+
+      <div class="bonus-grid">
+        <div class="bonus-card">
+          <div class="bonus-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <h4>Cheatsheet</h4>
+          <p>Printable one-page quick reference</p>
+        </div>
+
+        <div class="bonus-card">
+          <div class="bonus-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <h4>Timeline</h4>
+          <p>4-week implementation plan</p>
+        </div>
+
+        <div class="bonus-card">
+          <div class="bonus-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <h4>Email Templates</h4>
+          <p>Copy/paste ready to use</p>
+        </div>
+
+        <div class="bonus-card">
+          <div class="bonus-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <polyline points="9 12 12 15 15 9"/>
+            </svg>
+          </div>
+          <h4>Lifetime Updates</h4>
+          <p>Never pay again</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq-header">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Questions? We've Got Answers.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            Do I need a lawyer to use this?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <p>For straightforward trademark filings, LLC formations, and basic copyright registrations, no. This guide gives you everything you need to do it yourself. However, if you're dealing with complex situations—opposition proceedings, international filings, major acquisitions—you may want professional help. We tell you clearly when a lawyer makes sense.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How is this different from free information online?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <p>Free information is scattered, generic, and often outdated. This guide provides curated, step-by-step walkthroughs with actual examples, templates you can use immediately, and case studies showing real outcomes. It's the difference between reading about swimming and having someone walk you through each stroke in the water.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What if I'm already in business? Is it too late?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <p>Not too late at all. Many entrepreneurs start without proper protection and then add it later. The guide includes a "catch-up" section showing you exactly what to prioritize if you've been in business for years without formal IP protection. Better late than never.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What if I choose the wrong structure?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <p>The guide includes a comprehensive decision matrix with 12 specific scenarios to help you choose. And if you start with an LLC but later need to convert to a Corporation (for VC funding, for example), we have a complete case study showing exactly how one founder did it—plus the template documents you need.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How long do I have access to updates?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <p>Lifetime. When trademark laws change (they do regularly), when the Copyright Office updates its forms (they just did in 2024), when we add new case studies or templates—you get all of it without paying again. One price, everything forever.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What's your refund policy?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              <p>30-day money-back guarantee, no questions asked. If you go through the material and don't think it provides value, email us for a full refund. We want you to feel confident about your purchase.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="final-cta-content">
+      <span class="section-label" style="color: var(--accent);">Start Today</span>
+      <h2>Your Business Deserves Protection</h2>
+      <p>Every day you wait is another day of unnecessary risk. The steps are straightforward—you just need the right guide.</p>
+
+      <a href="#pricing" class="btn-primary">Get Instant Access</a>
+
+      <div class="guarantee-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 12 15 15 9"/>
+        </svg>
+        30-Day Money-Back Guarantee · Instant Digital Delivery
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact</a>
+      <a href="#">Refund Policy</a>
+    </div>
+    <p class="footer-copy">© 2026 The IP Vault. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isActive = faqItem.classList.contains('active');
+
+        document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+        if (!isActive) faqItem.classList.add('active');
+      });
+    });
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.pageYOffset > 50);
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>

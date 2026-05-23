@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The IP Vault - Interactive Protection Workbook</title>
+<style>
+:root {
+  --accent: #2563eb;
+  --ink: #1e293b;
+  --muted: #64748b;
+  --rule: #e2e8f0;
+  --paper: #ffffff;
+  --highlight: #fef3c7;
+}
+
+@page { size: A4 portrait; margin: 12mm 14mm; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--ink); background: var(--paper); font-size: 9pt; line-height: 1.5; }
+
+.page { page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+
+/* Cover */
+.cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20mm; background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; }
+.cover-tag { background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 10pt; letter-spacing: 1px; text-transform: uppercase; }
+.cover h1 { font-size: 28pt; font-weight: 700; margin: 15mm 0 5mm; line-height: 1.2; }
+.cover .subtitle { font-size: 12pt; opacity: 0.9; max-width: 280pt; }
+.cover-meta { margin-top: 30mm; display: flex; gap: 40px; justify-content: center; }
+.cover-info { text-align: left; font-size: 9pt; line-height: 1.8; }
+
+/* TOC */
+.toc { padding: 15mm 20mm; }
+.toc h2 { font-size: 16pt; margin-bottom: 10mm; }
+.toc-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+.toc-item a { color: var(--ink); text-decoration: none; }
+.toc-item span { color: var(--muted); }
+
+/* Section Header */
+.section-header { padding: 10mm 15mm 5mm; background: var(--highlight); margin: 0 -14mm; }
+.section-num { font-size: 8pt; color: var(--accent); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.section-title { font-size: 18pt; font-weight: 700; margin: 3mm 0; }
+
+/* Form Styles */
+.form-section { padding: 10mm 15mm; }
+.form-title { font-size: 13pt; font-weight: 600; margin-bottom: 8mm; color: var(--accent); }
+.form-group { margin-bottom: 8mm; }
+.form-label { font-size: 9pt; font-weight: 600; color: var(--muted); margin-bottom: 3mm; display: block; }
+.form-input { width: 100%; border: none; border-bottom: 1px solid var(--rule); padding: 4px 0; font-size: 10pt; background: transparent; }
+.form-input:focus { outline: none; border-bottom-color: var(--accent); }
+.form-hint { font-size: 7.5pt; color: var(--muted); margin-top: 2mm; }
+
+/* Checklist */
+.checklist { list-style: none; padding: 0; margin: 0; }
+.checklist li { display: flex; align-items: flex-start; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.checkbox { width: 14px; height: 14px; border: 2px solid var(--accent); margin-right: 8px; flex-shrink: 0; }
+.check-text { flex: 1; }
+
+/* Table */
+table.data { width: 100%; border-collapse: collapse; margin: 5mm 0; font-size: 8.5pt; }
+th, td { border: 1px solid var(--rule); padding: 5px 7px; text-align: left; }
+th { background: #f1f5f9; font-weight: 600; }
+tr:nth-child(even) { background: #fafafa; }
+
+/* Info Box */
+.info-box { background: #eff6ff; border-left: 3px solid var(--accent); padding: 8px 10px; margin: 8mm 0; font-size: 8.5pt; }
+.info-box strong { color: var(--accent); }
+
+/* Progress Bar */
+.progress-wrap { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin: 5mm 0; }
+.progress-fill { background: linear-gradient(90deg, var(--accent), #3b82f6); height: 100%; }
+
+/* Signature Line */
+.sig-line { border-bottom: 1px solid var(--ink); width: 150px; display: inline-block; margin-left: 10px; }
+
+/* Footer */
+.page-footer { position: fixed; bottom: 8mm; left: 14mm; right: 14mm; font-size: 7pt; color: var(--muted); display: flex; justify-content: space-between; }
+
+/* Two Column Layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; }
+
+/* Cards */
+.card { border: 1px solid var(--rule); border-radius: 6px; padding: 8px; margin-bottom: 5mm; }
+.card-title { font-weight: 600; font-size: 9pt; color: var(--accent); margin-bottom: 3px; }
+.card-value { font-size: 14pt; font-weight: 700; }
+.card-label { font-size: 7.5pt; color: var(--muted); }
+
+/* Numbered Steps */
+.step { display: flex; margin-bottom: 6mm; }
+.step-num { width: 20px; height: 20px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9pt; font-weight: 600; flex-shrink: 0; margin-right: 8px; }
+.step-content { flex: 1; }
+.step-title { font-weight: 600; font-size: 9.5pt; margin-bottom: 2px; }
+.step-desc { font-size: 8pt; color: var(--muted); }
+
+/* Timeline */
+.timeline { border-left: 2px solid var(--accent); padding-left: 10mm; margin-left: 5mm; }
+.timeline-item { position: relative; margin-bottom: 8mm; }
+.timeline-item::before { content: ''; position: absolute; left: -15mm; top: 3px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
+.timeline-date { font-size: 8pt; color: var(--accent); font-weight: 600; }
+.timeline-title { font-size: 10pt; font-weight: 600; margin: 2px 0; }
+.timeline-desc { font-size: 8pt; color: var(--muted); }
+
+/* KPI Grid */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; margin: 8mm 0; }
+.kpi-card { text-align: center; padding: 6px; border: 1px solid var(--rule); border-radius: 4px; }
+.kpi-value { font-size: 14pt; font-weight: 700; color: var(--accent); }
+.kpi-label { font-size: 7pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<section class="cover page">
+  <span class="cover-tag">INTERACTIVE WORKBOOK</span>
+  <h1>The IP Vault</h1>
+  <p class="subtitle">Your Step-by-Step Guide to Protecting Your Business, Brand, and Creative Assets</p>
+
+  <div class="cover-meta">
+    <div class="meta-stats">
+      <div style="margin-bottom: 8mm;">
+        <div style="font-size: 9pt; color: rgba(255,255,255,0.7);">START YOUR PROTECTION JOURNEY</div>
+      </div>
+    </div>
+    <div class="cover-info">
+      <strong>INCLUDES:</strong><br>
+      ✓ Fillable action checklists<br>
+      ✓ Customizable tracking sheets<br>
+      ✓ Timeline planning tools<br>
+      ✓ Decision-making worksheets
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 2: TABLE OF CONTENTS -->
+<section class="toc page">
+  <h2>Your Protection Roadmap</h2>
+
+  <div class="toc-item">
+    <a href="#step1">Step 1: Brand Audit & Trademark Search</a>
+    <span>Page 3</span>
+  </div>
+  <div class="toc-item">
+    <a href="#step2">Step 2: Copyright Registration Strategy</a>
+    <span>Page 5</span>
+  </div>
+  <div class="toc-item">
+    <a href="#step3">Step 3: LLC Formation Checklist</a>
+    <span>Page 7</span>
+  </div>
+  <div class="toc-item">
+    <a href="#step4">Step 4: Delaware C-Corp Setup (If Needed)</a>
+    <span>Page 9</span>
+  </div>
+  <div class="toc-item">
+    <a href="#step5">Step 5: Ongoing Protection Calendar</a>
+    <span>Page 11</span>
+  </div>
+  <div class="toc-item">
+    <a href="#action">Your Action Plan</a>
+    <span>Page 13</span>
+  </div>
+</section>
+
+<!-- PAGE 3: STEP 1 - BRAND AUDIT -->
+<section class="page">
+  <div class="section-header">
+    <div class="section-num">STEP 1</div>
+    <h2 class="section-title">Brand Audit & Trademark Search</h2>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Your Brand Information</div>
+
+    <div class="two-col">
+      <div>
+        <div class="form-group">
+          <label class="form-label">BRAND NAME</label>
+          <input type="text" class="form-input" placeholder="Enter your brand name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">YOUR NAME / COMPANY</label>
+          <input type="text" class="form-input" placeholder="Full legal name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">INDUSTRY / NICHE</label>
+          <input type="text" class="form-input" placeholder="e.g., Marketing Consulting">
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">WEBSITE URL</label>
+          <input type="text" class="form-input" placeholder="www.yourbrand.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">DATE OF FIRST USE</label>
+          <input type="text" class="form-input" placeholder="Month/Year">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ANNUAL REVENUE (APPROX)</label>
+          <input type="text" class="form-input" placeholder="e.g., $85,000">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">USPTO TESS Search Checklist</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text"><strong>Searched exact brand name:</strong> tess2.uspto.gov</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Searched similar sounding names:</strong> phonetically similar</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Searched common misspellings:</strong> typos that could conflict</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Checked same Nice Class:</strong> your industry category</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Checked related classes:</strong> similar goods/services</div></li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Nice Classification Quick Reference:</strong><br>
+      Class 35 = Business Services | Class 41 = Courses/Training | Class 42 = Tech/SaaS<br>
+      Class 9 = Apps/Software | Class 25 = Clothing | Class 14 = Jewelry
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Search Results</div>
+    <table class="data">
+      <thead>
+        <tr><th>Conflicting Mark</th><th>Class</th><th>Goods/Services</th><th>Risk Level</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 1: Brand Audit</span>
+  </div>
+</section>
+
+<!-- PAGE 4: STEP 1 CONTINUED -->
+<section class="page">
+  <div class="form-section">
+    <div class="form-title">Your Classification Decision</div>
+
+    <div class="form-group">
+      <label class="form-label">SELECT YOUR NICE CLASS(ES)</label>
+      <table class="data">
+        <thead>
+          <tr><th>Class #</th><th>Description</th><th>Select</th><th>Estimated Cost</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>35</td><td>Advertising; Business Management</td><td><div class="checkbox"></div></td><td>$250</td></tr>
+          <tr><td>41</td><td>Education; Training; Online Courses</td><td><div class="checkbox"></div></td><td>$250</td></tr>
+          <tr><td>42</td><td>Software as a Service; Technology</td><td><div class="checkbox"></div></td><td>$250</td></tr>
+          <tr><td>9</td><td>Mobile Apps; Software Downloads</td><td><div class="checkbox"></div></td><td>$250</td></tr>
+          <tr><td>25</td><td>Clothing; Apparel; Merchandise</td><td><div class="checkbox"></div></td><td>$250</td></tr>
+          <tr><td>14</td><td>Jewelry; Watches; Precious Metals</td><td><div class="checkbox"></div></td><td>$250</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">TOTAL CLASSES SELECTED: _______ × $250 = $_______</label>
+      <div class="progress-wrap"><div class="progress-fill" style="width: 0%"></div></div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Filing Decision</div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-value">$250</div>
+        <div class="kpi-label">TEAS Plus / class</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">$350</div>
+        <div class="kpi-label">TEAS Standard / class</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">8-12</div>
+        <div class="kpi-label">Months to register</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">10</div>
+        <div class="kpi-label">Years protection</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">MY FILING CHOICE</label>
+      <div style="display: flex; gap: 20px; margin-top: 5mm;">
+        <div><div class="checkbox"></div> TEAS Plus ($250/class) - Recommended</div>
+        <div><div class="checkbox"></div> TEAS Standard ($350/class)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Specimen Preparation</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text">Product labels/hang tags with brand name</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Website screenshot showing brand in commerce</div></li>
+      <li><div class="check-text">Other: <input type="text" class="form-input" style="width: 200px;"></div></li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 1: Continued</span>
+  </div>
+</section>
+
+<!-- PAGE 5: STEP 2 - COPYRIGHT -->
+<section class="page">
+  <div class="section-header">
+    <div class="section-num">STEP 2</div>
+    <h2 class="section-title">Copyright Registration Strategy</h2>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Your Copyrightable Works</div>
+
+    <table class="data">
+      <thead>
+        <tr><th>Work Title</th><th>Type</th><th>Status</th><th>Register?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><input type="text" class="form-input" placeholder="Course name"></td>
+            <td><select class="form-input"><option>Video Course</option><option>Workbook</option><option>Template</option><option>Podcast</option><option>Book</option></select></td>
+            <td><select class="form-input"><option>Published</option><option>Unpublished</option></select></td>
+            <td><div class="checkbox"></div></td></tr>
+        <tr><td><input type="text" class="form-input"></td>
+            <td><select class="form-input"><option>Video Course</option><option>Workbook</option><option>Template</option><option>Podcast</option><option>Book</option></select></td>
+            <td><select class="form-input"><option>Published</option><option>Unpublished</option></select></td>
+            <td><div class="checkbox"></div></td></tr>
+        <tr><td><input type="text" class="form-input"></td>
+            <td><select class="form-input"><option>Video Course</option><option>Workbook</option><option>Template</option><option>Podcast</option><option>Book</option></select></td>
+            <td><select class="form-input"><option>Published</option><option>Unpublished</option></select></td>
+            <td><div class="checkbox"></div></td></tr>
+        <tr><td><input type="text" class="form-input"></td>
+            <td><select class="form-input"><option>Video Course</option><option>Workbook</option><option>Template</option><option>Podcast</option><option>Book</option></select></td>
+            <td><select class="form-input"><option>Published</option><option>Unpublished</option></select></td>
+            <td><div class="checkbox"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Group Registration Decision</div>
+
+    <div class="card">
+      <div class="card-title">For Video Courses</div>
+      <p style="font-size: 8pt; margin: 3px 0;">Register ALL videos together as ONE group for $65. Requirements: same author, same basic nature, collected together.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">For Photos</div>
+      <p style="font-size: 8pt; margin: 3px 0;">Register up to 750 photos in ONE group for $65. Great for photographers, stock image creators.</p>
+    </div>
+
+    <div class="form-group" style="margin-top: 8mm;">
+      <label class="form-label">MY COPYRIGHT REGISTRATION PLAN</label>
+      <table class="data">
+        <thead>
+          <tr><th>Registration Type</th><th>Quantity</th><th>Fee Each</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single Work</td><td>_______</td><td>$65</td><td>$_______</td></tr>
+          <tr><td>Video Group</td><td>_______</td><td>$65</td><td>$_______</td></tr>
+          <tr><td>Photo Group</td><td>_______</td><td>$65</td><td>$_______</td></tr>
+          <tr style="background: #eff6ff;"><td><strong>TOTAL</strong></td><td></td><td></td><td><strong>$_______</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 2: Copyright</span>
+  </div>
+</section>
+
+<!-- PAGE 6: STEP 2 CONTINUED -->
+<section class="page">
+  <div class="form-section">
+    <div class="form-title">Why Registration Matters</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card" style="border-left: 3px solid #ef4444;">
+        <div class="kpi-value">$0</div>
+        <div class="kpi-label">Statutory damages WITHOUT registration</div>
+      </div>
+      <div class="kpi-card" style="border-left: 3px solid #22c55e;">
+        <div class="kpi-value">$150K</div>
+        <div class="kpi-label">Per work WITH registration</div>
+      </div>
+      <div class="kpi-card" style="border-left: 3px solid #f59e0b;">
+        <div class="kpi-value">0</div>
+        <div class="kpi-label">Attorney fees WITHOUT registration</div>
+      </div>
+      <div class="kpi-card" style="border-left: 3px solid #2563eb;">
+        <div class="kpi-value">100%</div>
+        <div class="kpi-label">Recoverable WITH registration</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Copyright Office Filing Guide</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Go to copyright.gov/registration</div>
+        <div class="step-desc">Click "Log in to the eCO Portal" to start your application</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Select your work type</div>
+        <div class="step-desc">Literary for books/workbooks | Performing Arts for videos | Sound Recording for audio</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Complete application fields</div>
+        <div class="step-desc">Title, author, claimant, publication date, deposit material</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Upload your deposit</div>
+        <div class="step-desc">Complete PDF for literary works | One video for groups | High-res images</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Pay $65 and submit</div>
+        <div class="step-desc">Credit card accepted | Instant confirmation | 3-6 month processing</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">My Registration Tracking</div>
+    <table class="data">
+      <thead>
+        <tr><th>Title</th><th>App #</th><th>Filing Date</th><th>Received Date</th><th>Certificate #</th></tr>
+      </thead>
+      <tbody>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 2: Continued</span>
+  </div>
+</section>
+
+<!-- PAGE 7: STEP 3 - LLC -->
+<section class="page">
+  <div class="section-header">
+    <div class="section-num">STEP 3</div>
+    <h2 class="section-title">LLC Formation Checklist</h2>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Your LLC Information</div>
+    <div class="two-col">
+      <div>
+        <div class="form-group">
+          <label class="form-label">LLC NAME</label>
+          <input type="text" class="form-input" placeholder="Your LLC Name LLC">
+        </div>
+        <div class="form-group">
+          <label class="form-label">FORMATION STATE</label>
+          <select class="form-input">
+            <option>Select state...</option>
+            <option>Delaware - Best for investors</option>
+            <option>California</option>
+            <option>Texas</option>
+            <option>New York</option>
+            <option>Wyoming - Privacy focus</option>
+            <option>Florida</option>
+            <option>Other: ________</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">FORMATION DATE</label>
+          <input type="text" class="form-input" placeholder="MM/DD/YYYY">
+        </div>
+        <div class="form-group">
+          <label class="form-label">REGISTERED AGENT</label>
+          <input type="text" class="form-input" placeholder="Agent name or service">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Formation Checklist</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text"><strong>Name search completed</strong> - Searched state database</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Domain available</strong> - Checked domain registrar</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Social media handles</strong> - Instagram, Facebook, TikTok checked</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Registered agent selected</strong> - Have agent info</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Articles of Organization filed</strong> - State filing submitted</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Filing fee paid</strong> - Amount: $_______</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Certificate received</strong> - Downloaded filed copy</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Operating Agreement created</strong> - Signed and dated</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>EIN obtained</strong> - IRS.gov/ein application</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Bank account opened</strong> - Business account funded</div></li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 3: LLC Formation</span>
+  </div>
+</section>
+
+<!-- PAGE 8: STEP 3 CONTINUED -->
+<section class="page">
+  <div class="form-section">
+    <div class="form-title">Formation Costs</div>
+    <table class="data">
+      <thead>
+        <tr><th>State</th><th>Filing Fee</th><th>Registered Agent</th><th>Total Est.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Delaware</td><td>$90</td><td>$199/year</td><td>$289+</td></tr>
+        <tr><td>California</td><td>$70</td><td>$70/year</td><td>$140+</td></tr>
+        <tr><td>Texas</td><td>$300</td><td>Often included</td><td>$300+</td></tr>
+        <tr><td>New York</td><td>$200</td><td>$100/year</td><td>$300+</td></tr>
+        <tr><td>Wyoming</td><td>$100</td><td>$49/year</td><td>$149+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">My Total Investment</div>
+    <table class="data">
+      <thead>
+        <tr><th>Item</th><th>Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>State filing fee</td><td>$_______</td></tr>
+        <tr><td>Registered agent (1 year)</td><td>$_______</td></tr>
+        <tr><td>Name reservation (optional)</td><td>$_______</td></tr>
+        <tr><td>Expedited processing (optional)</td><td>$_______</td></tr>
+        <tr style="background: #eff6ff;"><td><strong>TOTAL FORMATION COST</strong></td><td><strong>$_______</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Annual Compliance Reminder</div>
+    <div class="info-box">
+      <strong>Mark your calendar:</strong><br><br>
+      □ State annual report due: ____________<br>
+      □ Registered agent renewal: ____________<br>
+      □ Estimated annual cost: $_______
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Operating Agreement Key Points</div>
+    <div class="two-col">
+      <div>
+        <div class="form-group">
+          <label class="form-label">MEMBERS & OWNERSHIP</label>
+          <input type="text" class="form-input" placeholder="Member 1: 100%">
+        </div>
+        <div class="form-group">
+          <label class="form-label">CAPITAL CONTRIBUTION</label>
+          <input type="text" class="form-input" placeholder="$ Amount">
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">MANAGEMENT STYLE</label>
+          <select class="form-input">
+            <option>Select...</option>
+            <option>Member-managed</option>
+            <option>Manager-managed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">DISTRIBUTION PROPORTION</label>
+          <input type="text" class="form-input" placeholder="100%">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 3: Continued</span>
+  </div>
+</section>
+
+<!-- PAGE 9: STEP 4 - C-CORP -->
+<section class="page">
+  <div class="section-header">
+    <div class="section-num">STEP 4</div>
+    <h2 class="section-title">Delaware C-Corp Setup (If Seeking VC)</h2>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Is C-Corp Right for You?</div>
+
+    <div class="card">
+      <div class="card-title">Choose C-Corp if:</div>
+      <ul style="font-size: 8pt; margin: 0; padding-left: 15px;">
+        <li>Seeking venture capital or angel investment</li>
+        <li>Planning to IPO or be acquired</li>
+        <li>Have multiple co-founders with equity</li>
+        <li>Need to issue stock options to employees</li>
+        <li>Building a high-growth tech company</li>
+      </ul>
+    </div>
+
+    <div class="form-group" style="margin-top: 8mm;">
+      <label class="form-label">MY SITUATION</label>
+      <div style="display: flex; gap: 20px;">
+        <div><div class="checkbox"></div> Yes, pursuing VC</div>
+        <div><div class="checkbox"></div> Maybe in future</div>
+        <div><div class="checkbox"></div> LLC is fine for now</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Formation Checklist</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text"><strong>Delaware name search</strong> - corp.delaware.gov</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Registered agent selected</strong> - Delaware agent</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Certificate of Incorporation filed</strong> - $89 filing fee</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Received certified copy</strong> - Official document</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>First board meeting held</strong> - Via consent or video</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Bylaws adopted</strong> - Corporate governance</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Officers appointed</strong> - CEO, CFO, Secretary</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Founder stock issued</strong> - Stock purchase agreements</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>IP assigned to company</strong> - Assignment agreements</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>83(b) elections filed</strong> - Within 30 days!</div></li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 4: C-Corp</span>
+  </div>
+</section>
+
+<!-- PAGE 10: STEP 4 CONTINUED -->
+<section class="page">
+  <div class="form-section">
+    <div class="form-title">My Cap Table</div>
+    <table class="data">
+      <thead>
+        <tr><th>Founder/Investor</th><th>Shares</th><th>Percentage</th><th>Vesting</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><input type="text" class="form-input" placeholder="Founder 1"></td>
+            <td><input type="text" class="form-input" placeholder="4,000,000"></td>
+            <td><input type="text" class="form-input" placeholder="40%"></td>
+            <td>4 years / 1 year cliff</td></tr>
+        <tr><td><input type="text" class="form-input" placeholder="Founder 2"></td>
+            <td><input type="text" class="form-input" placeholder="4,000,000"></td>
+            <td><input type="text" class="form-input" placeholder="40%"></td>
+            <td>4 years / 1 year cliff</td></tr>
+        <tr><td><input type="text" class="form-input" placeholder="Option Pool"></td>
+            <td><input type="text" class="form-input" placeholder="2,000,000"></td>
+            <td><input type="text" class="form-input" placeholder="20%"></td>
+            <td>As issued</td></tr>
+        <tr style="background: #eff6ff;">
+          <td><strong>TOTAL</strong></td>
+          <td><strong>10,000,000</strong></td>
+          <td><strong>100%</strong></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Key Documents Checklist</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text">Certificate of Incorporation (certified)</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Delaware Certificate of Good Standing</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Bylaws</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Founder Stock Purchase Agreements</div></li>
+      <li><div class="checkbox"></div><div class="check-text">IP Assignment Agreements</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Board Consent Resolutions</div></li>
+      <li><div class="checkbox"></div><div class="check-text">83(b) Election filings with IRS</div></li>
+      <li><div class="checkbox"></div><div class="check-text">SAFE document(s) (if investors)</div></li>
+    </ul>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Total Investment</div>
+    <table class="data">
+      <thead>
+        <tr><th>Item</th><th>Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Delaware filing</td><td>$89</td></tr>
+        <tr><td>Registered agent (1 year)</td><td>$199</td></tr>
+        <tr><td>California foreign qualification (if applicable)</td><td>$100</td></tr>
+        <tr><td>Legal document prep (if using attorney)</td><td>$_______</td></tr>
+        <tr style="background: #eff6ff;"><td><strong>TOTAL</strong></td><td><strong>$_______</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 4: Continued</span>
+  </div>
+</section>
+
+<!-- PAGE 11: STEP 5 - ONGOING -->
+<section class="page">
+  <div class="section-header">
+    <div class="section-num">STEP 5</div>
+    <h2 class="section-title">Ongoing Protection Calendar</h2>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Annual Compliance Checklist</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text"><strong>Filing annual report</strong> - Check state due date</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Pay registered agent renewal</strong> - Don't let this lapse!</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Update registered agent if changed</strong> - Legal requirement</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Review and update Operating Agreement/Bylaws</strong> - If circumstances changed</div></li>
+      <li><div class="checkbox"></div><div class="check-text"><strong>Verify business licenses are current</strong> - Local requirements</div></li>
+    </ul>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Quarterly Monitoring</div>
+    <table class="data">
+      <thead>
+        <tr><th>Quarter</th><th>Trademark Watch</th><th>Copyright Check</th><th>Other Actions</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Q1 (Jan-Mar)</td><td>Search for similar marks</td><td>New works to register?</td><td>Annual report due</td></tr>
+        <tr><td>Q2 (Apr-Jun)</td><td>Check competitor filings</td><td>Update registrations</td><td>Budget for renewals</td></tr>
+        <tr><td>Q3 (Jul-Sep)</td><td>Enforcement actions</td><td>Monitor for piracy</td><td>Document reviews</td></tr>
+        <tr><td>Q4 (Oct-Dec)</td><td>Year-end audit</td><td>Planning for next year</td><td>Compliance check</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Critical Deadlines</div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">Years 5-6 (of registration)</div>
+        <div class="timeline-title">Trademark Section 8 Declaration</div>
+        <div class="timeline-desc">Must file to maintain registration. Miss = cancellation.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Year 10</div>
+        <div class="timeline-title">Trademark Renewal</div>
+        <div class="timeline-desc">Every 10 years. Mark your calendar 1 year early.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Every year</div>
+        <div class="timeline-title">LLC/Corp Annual Reports</div>
+        <div class="timeline-desc">Set reminder 60 days before due. Late fees can be $50+.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 5: Ongoing Protection</span>
+  </div>
+</section>
+
+<!-- PAGE 12: STEP 5 CONTINUED -->
+<section class="page">
+  <div class="form-section">
+    <div class="form-title">My Protection Calendar</div>
+
+    <div class="form-group">
+      <label class="form-label">TRADEMARK DEADLINES</label>
+      <table class="data">
+        <thead>
+          <tr><th>Mark</th><th>Registration Date</th><th>Section 8 Due</th><th>Renewal Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text" class="form-input"></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ENTITY COMPLIANCE DEADLINES</label>
+      <table class="data">
+        <thead>
+          <tr><th>Entity</th><th>Type</th><th>Annual Report Due</th><th>Registered Agent Renewal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text" class="form-input"></td><td>LLC / C-Corp</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">COPYRIGHT REGISTRATION CALENDAR</label>
+      <table class="data">
+        <thead>
+          <tr><th>Work Title</th><th>Registration #</th><th>Date Registered</th><th>Next Registration</th></tr>
+        </thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td>N/A (perpetual)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Enforcement Tracker</div>
+    <table class="data">
+      <thead>
+        <tr><th>Date</th><th>Infringement Type</th><th>Action Taken</th><th>Outcome</th></tr>
+      </thead>
+      <tbody>
+        <tr><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Step 5: Continued</span>
+  </div>
+</section>
+
+<!-- PAGE 13: ACTION PLAN -->
+<section class="page">
+  <div class="section-header">
+    <div class="section-num">YOUR ACTION PLAN</div>
+    <h2 class="section-title">30-Day Protection Sprint</h2>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Week 1: Foundation</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Complete USPTO TESS trademark search</div>
+        <div class="step-desc">Go to tess2.uspto.gov and search your brand name + variations</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Identify your Nice Classification(s)</div>
+        <div class="step-desc">Choose classes that cover your current and future offerings</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Decide: LLC or C-Corp?</div>
+        <div class="step-desc">If VC funding possible, do Delaware C-Corp from day one</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Week 2: Filing</div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">File trademark application</div>
+        <div class="step-desc">TEAS Plus ($250/class) at teas.uspto.gov</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">File entity formation</div>
+        <div class="step-desc">Submit Articles of Organization (LLC) or Certificate of Incorporation (C-Corp)</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-title">Select and pay registered agent</div>
+        <div class="step-desc">Essential for maintaining your entity</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Week 3: Documentation</div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <div class="step-title">Create Operating Agreement or Bylaws</div>
+        <div class="step-desc">Critical for liability protection and governance</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-content">
+        <div class="step-title">File copyright registrations</div>
+        <div class="step-desc">copyright.gov/registration - $65 per registration</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">9</div>
+      <div class="step-content">
+        <div class="step-title">Apply for EIN</div>
+        <div class="step-desc">Free at IRS.gov/ein - needed for bank account</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Week 4: Setup</div>
+    <div class="step">
+      <div class="step-num">10</div>
+      <div class="step-content">
+        <div class="step-title">Open business bank account</div>
+        <div class="step-desc">Separate from personal - critical for liability protection</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">11</div>
+      <div class="step-content">
+        <div class="step-title">Set up compliance calendar</div>
+        <div class="step-desc">Annual reports, trademark deadlines, renewals</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">12</div>
+      <div class="step-content">
+        <div class="step-title">Document everything</div>
+        <div class="step-desc">Save all certificates, confirmations, and filings</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Your Action Plan</span>
+  </div>
+</section>
+
+<!-- PAGE 14: SUMMARY -->
+<section class="page">
+  <div class="form-section">
+    <div class="form-title">Your Protection Summary</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-value">$___</div>
+        <div class="kpi-label">Trademark Investment</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">$___</div>
+        <div class="kpi-label">Entity Formation</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">$___</div>
+        <div class="kpi-label">Copyright Registration</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">$___</div>
+        <div class="kpi-label">Total Investment</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Key Documents Secured</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><div class="check-text">Trademark application filed (App #: ___________)</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Entity formed (Name: ___________)</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Operating Agreement/Bylaws created</div></li>
+      <li><div class="checkbox"></div><div class="check-text">EIN obtained (#: ___________)</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Business bank account opened</div></li>
+      <li><div class="checkbox"></div><div class="check-text">Copyright registrations (Count: ___)</div></li>
+    </ul>
+  </div>
+
+  <div class="form-section">
+    <div class="form-title">Next Steps & Notes</div>
+    <textarea class="form-input" style="height: 60mm; resize: none; border: 1px solid var(--rule); padding: 5px;"></textarea>
+  </div>
+
+  <div class="form-section">
+    <div class="info-box">
+      <strong>Remember:</strong> Protection is ongoing. Set your calendar reminders now so you never miss a deadline. The cost of protection is always less than the cost of infringement.
+    </div>
+  </div>
+
+  <div class="form-section" style="text-align: center; margin-top: 20mm;">
+    <div style="font-size: 12pt; font-weight: 600; color: var(--accent);">QUESTIONS?</div>
+    <p style="font-size: 9pt; color: var(--muted);">Refer to the complete guides in your package:<br>
+    Case Studies, Templates, Cheatsheets, and Swipe Files</p>
+  </div>
+
+  <div class="page-footer">
+    <span>The IP Vault - Interactive Protection Workbook</span>
+    <span>Complete</span>
+  </div>
+</section>
+
+</body>
+</html>
